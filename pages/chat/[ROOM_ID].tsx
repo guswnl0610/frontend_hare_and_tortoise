@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import styled, { css } from 'styled-components';
 import NavigationBar from 'components/NavigationBar';
 import MapNavigationBar from 'components/MapNavigationBar';
+import { useAuth } from 'hooks/useAuth';
 import { useWebsocket } from 'hooks/useWebsocket';
 import { useChatReceived } from 'hooks/useChatReceived';
 import { Send } from 'react-ionicons';
@@ -29,7 +30,7 @@ function Chat() {
     variables: { room_id: ROOM_ID, offset: 0, limit: 20 },
   });
   const [isChatAdded, setIsChatAdded] = useState<boolean>(false);
-
+  useAuth();
   const { enterRoom, sendMessage, received, isSocketConnected } = useWebsocket();
   useChatReceived(received);
   const { createChat } = useCreateChat(ROOM_ID as string);

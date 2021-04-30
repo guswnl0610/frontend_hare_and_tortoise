@@ -31,25 +31,7 @@ const createApolloClient = () => {
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
-          fields: {
-            // chats: {
-            //   keyArgs: ['room_id'],
-            //   merge(existing = [], incoming, { args }) {
-            //     console.log(existing, incoming);
-            //     if (!args.offset) {
-            //       return [...incoming];
-            //     }
-            //     return [...incoming, ...existing];
-            //   },
-            // },
-            // room: {
-            //   keyArgs: ['room_id'],
-            //   merge(existing, incoming, { readField }) {
-            //     console.log('existing', existing?.chats, 'incoming', incoming?.chats);
-            //     return { ...incoming };
-            //   },
-            // },
-          },
+          fields: {},
         },
       },
     }),
@@ -64,7 +46,7 @@ export const initializeApollo = (initialState = null): ApolloClient<NormalizedCa
     _apolloClient.cache.restore({ ...existingCache, ...initialState });
   }
 
-  //ssg나 ssr인 경우
+  //ssg나 ssr인 경우c
   if (typeof window === 'undefined') {
     return _apolloClient;
   }

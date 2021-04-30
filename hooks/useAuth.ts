@@ -6,21 +6,22 @@ import { REFRESH_TOKEN } from 'apollo/queries';
 
 export const useAuth = () => {
   const { data, error, loading, refetch } = useQuery(REFRESH_TOKEN, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
   const timeoutId = useRef<NodeJS.Timeout>(null);
   const _authVar = useReactiveVar(authVar);
   const router = useRouter();
 
-  const onLogout = () => {
-    router.push(`/login`);
-    clearTimeout(timeoutId.current);
-  };
-
   const setTimer = (second: number) => {
+    // if (!_authVar.access_token) return router.push('/login');
     const newtimeoutId = setTimeout(async () => {
-      await refetch();
-      console.log('refetch');
+      try {
+        await refetch();
+        // console.log('refetch');
+      } catch (error) {
+        // console.error('error!', error);
+        router.push('/login');
+      }
     }, second * 1000);
     timeoutId.current = newtimeoutId;
   };
@@ -34,18 +35,25 @@ export const useAuth = () => {
       return;
     }
 
-    const { access_token, id: userId, name, expires_in } = data.refreshToken;
+    const { access_token, id: userId, name, expires_in } = data.refreshToken || {};
     authVar({ access_token, isLogined: true, userId, expires_in, name });
   }, [data]);
 
   useEffect(() => {
     console.log(_authVar);
-    if (!_authVar || !_authVar.access_token) {
-      onLogout();
-      return;
-    }
-    setTimer(_authVar.expires_in - 10);
+    // if (!_authVar || !_authVar.access_token) {
+    //   onLogout();
+    //   return;
+    // }
+    if (!_authVar) return;
+    setTimer(_authVar?.expires_in - 10);
   }, [_authVar]);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId.current);
+    };
+  }, []);
 
   return { loading, data };
 };

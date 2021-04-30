@@ -13,6 +13,7 @@ import { SOCKET_MESSAGE_TYPE } from 'constants/index';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useAuth } from 'hooks/useAuth';
 const Map = dynamic(() => import('components/Map'));
 
 enum AnimalType {
@@ -32,6 +33,8 @@ function MapPage() {
   const turtleMarker = useRef(null);
   const watchIdRef = useRef<number>(null);
   const { ROOM_ID } = router.query;
+
+  useAuth();
 
   const [getRoom, { data }] = useLazyQuery(GET_ROOM); //waiting for graphql server...
 

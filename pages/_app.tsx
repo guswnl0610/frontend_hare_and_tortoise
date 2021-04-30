@@ -52,17 +52,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           <script src="https://developers.kakao.com/sdk/js/kakao.js" defer></script>
           <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         </Head>
-        <ErrorBoundary>
-          <ApolloProvider client={apolloClient}>
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <ErrorBoundary>
+            <ApolloProvider client={apolloClient}>
               <CssBaseline />
-              <AuthProvider>
-                <Component {...pageProps} />
-              </AuthProvider>
+              {/* <AuthProvider> */}
+              <Component {...pageProps} />
+              {/* </AuthProvider> */}
               <ToastContainer newestOnTop />
-            </ThemeProvider>
-          </ApolloProvider>
-        </ErrorBoundary>
+            </ApolloProvider>
+          </ErrorBoundary>
+        </ThemeProvider>
       </Template>
     </>
   );

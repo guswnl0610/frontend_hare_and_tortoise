@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 import { invitedRoomIdVar, authVar } from 'apollo/store';
 import { useSaveReceiver } from 'apollo/mutations/saveReceiver';
 import Skeleton from 'components/Skeleton';
@@ -47,5 +48,13 @@ function Invitation({ isLogined }: { isLogined: boolean }) {
     </>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async ctx => {
+//   console.log(ctx);
+
+//   return {
+//     props: {},
+//   };
+// };
 
 export default Invitation;

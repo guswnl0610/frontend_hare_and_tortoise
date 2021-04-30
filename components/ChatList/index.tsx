@@ -54,7 +54,7 @@ function ChatList({ chats, isChatAdded, setIsChatAdded }: IChatList) {
       offset: 0,
       limit,
     },
-    onCompleted: data => {
+    onCompleted: () => {
       listRef.current.scrollTo({ top: 3000 }); // 맨 처음 들어왔을 때 맨 아래로 스크롤 내림
     },
   });
@@ -62,7 +62,7 @@ function ChatList({ chats, isChatAdded, setIsChatAdded }: IChatList) {
   const [paginate, { client }] = useLazyQuery(GET_CHATS, {
     fetchPolicy: 'network-only',
     onCompleted: data => {
-      if (!data.chats.length) {
+      if (!data.chats?.length) {
         observerRef.current.disconnect();
         return;
       }
@@ -78,7 +78,7 @@ function ChatList({ chats, isChatAdded, setIsChatAdded }: IChatList) {
         data: {
           room: {
             ...existingRoom?.room,
-            chats: [...data.chats, ...(existingRoom.room.chats || [])],
+            chats: [...data.chats, ...(existingRoom?.room.chats || [])],
           },
         },
         variables: { room_id: ROOM_ID, offset: 0, limit },

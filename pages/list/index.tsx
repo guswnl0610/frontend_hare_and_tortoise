@@ -8,6 +8,7 @@ import RoomLog from 'components/RoomLog';
 import { IRoomLog } from 'types';
 import { useWebsocket } from 'hooks/useWebsocket';
 import { useChatReceived } from 'hooks/useChatReceived';
+import { useAuth } from 'hooks/useAuth';
 import NavigationBar from 'components/NavigationBar';
 const CreateRoomModal = dynamic(() => import('components/CreateRoomModal'));
 
@@ -17,6 +18,7 @@ function RoomList() {
   const { received, enterRoom, isSocketConnected } = useWebsocket();
   useChatReceived(received);
   const _authVar = useReactiveVar(authVar);
+  useAuth();
 
   useEffect(() => {
     if (loading || !data || !isSocketConnected) return;
@@ -32,7 +34,7 @@ function RoomList() {
         <title>토끼와거북이</title>
       </Head>
       <NavigationBar title={'채팅'} />
-      <div className="h-screen transform divide-y-2 overflow-scroll">
+      <div className="transform divide-y-2 overflow-auto">
         {data &&
           [...data.rooms]
             .sort((a, b) => {

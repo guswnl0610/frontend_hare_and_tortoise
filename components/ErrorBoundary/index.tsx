@@ -22,7 +22,7 @@ class ErrorBoundary extends Component<{}, ErrorBoundaryState> {
   }
 
   handleButtonClick = () => {
-    Router.push('/list');
+    Router.push('/login');
     Router.reload();
   };
 
